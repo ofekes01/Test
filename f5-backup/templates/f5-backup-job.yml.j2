@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: f5-backup
+  namespace: kube-system
+  labels:
+    {{- include "f5-backup.labels" . | indent 4 }}
+spec:
+  activeDeadlineSeconds: 43200
+  template:
+    metadata:
+      labels:
+        name: f5-backup
+    spec:
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 15
+      containers:
+      - name: f5-backup
+        image: {{ .Values.global.mbed.config.image_repository.address }}{{ .Values.asm.image.repository }}:{{ .Values.asm.image.tag }}
+        command:
+          - python3
+        args:
+          - /template/f5_backup.py
+        resources:
+          limits:
+            memory: 200Mi
+            cpu: 1.0
+          requests:
+            memory: 50Mi
+            cpu: 50m
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /template/healthcheck.bash
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 60
+        {{ if and .Values.global.mbed.state.config.tfoutput .Values.global.mbed.state.config.tfoutput.bigip_names }}
+        env:
+          - name: F5_BACKUP_SERVERS
+            value: {{ cat .Values.global.mbed.state.config.tfoutput.bigip_names .Values.global.mbed.state.config.tfoutput.bigip_failover_names | replace " " "," | replace "[" ""| replace "]" ""}}
+          - name: F5_BACKUP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: f5-backup
+                key: f5.backup
+          - name:  F5_BACKUP_REGION
+            value: {{ .Values.global.mbed.config.driver.aws.region }}
+          - name:  F5_BACKUP_BUCKET
+            value: {{ .Values.global.mbed.state.config.tfoutput.f5_bigip_bucket_name }}
+        {{ end }}
+        volumeMounts:
+          - name: workout
+            readOnly: true
+            mountPath: /template
+      volumes:
+        - name: workout
+          configMap:
+            name: f5-backup-imp

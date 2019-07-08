@@ -1,0 +1,2 @@
+To run tests:
+$ helm test f5-backup

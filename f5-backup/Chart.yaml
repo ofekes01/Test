@@ -1,0 +1,9 @@
+apiVersion: v1
+name: f5-backup
+version: 0.1.0
+description: F5 backup - backup archive file to S3 bucket
+sources:
+- https://github.com/ARMmbed/paas/tree/master/tools/f5-backup-chart
+maintainers:
+- name: IoT-SaaS-Platform
+  email: IoT-SaaS-Platform@arm.com

@@ -1,0 +1,5 @@
+# Default values for splatt
+asm:
+  image:
+    repository: /platform/splatt
+    tag: 0.18.10

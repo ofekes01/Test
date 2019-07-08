@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: f5-backup
+  name: f5-backup-imp
+  namespace: kube-system
+data:
+  f5_backup.py: |
+{{ tpl (.Files.Get "resources/backup_f5.py") . | indent 4 }}
+  healthcheck.bash: |
+{{ tpl (.Files.Get "resources/healthcheck.bash") . | indent 4 }}
+  s3put.sh: |
+{{ tpl (.Files.Get "resources/s3put.bash") . | indent 4 }}
