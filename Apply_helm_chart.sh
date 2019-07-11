@@ -1,5 +1,4 @@
 #!/bin/bash
-
 id
 
 wget -q https://storage.googleapis.com/kubernetes-helm/helm-v2.14.1-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/sbin/helm \
