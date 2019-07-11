@@ -10,3 +10,4 @@ chmod +x /usr/local/sbin/helm
  /usr/local/sbin/kubectl
  /usr/local/sbin/helm
  
+sleep 1000
