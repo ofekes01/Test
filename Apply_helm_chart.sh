@@ -1,5 +1,8 @@
 #!/bin/bash
 id
+
+cd /godata/pipelines/hello_world/f5-backup
+
 su -
 id
 
