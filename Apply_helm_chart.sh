@@ -15,4 +15,4 @@ chmod +x kubectl
 /tmp/kubectl
 /tmp/helm
  
-sleep 1000
+sleep 10000
