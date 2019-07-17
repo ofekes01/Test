@@ -11,4 +11,7 @@ splatt kubectl -n gocd get all
 
 helm list
 
+exit
+
+
 
